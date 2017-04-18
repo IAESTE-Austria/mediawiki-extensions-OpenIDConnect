@@ -146,7 +146,21 @@ class OpenIDConnect extends PluggableAuth {
 			if ( isset( $config['proxy'] ) ) {
 				$oidc->setHttpProxy( $config['proxy'] );
 			}
+			if( isset( $GLOBALS['wgOpenIDConnect_UseHostedDomain'] ) && $GLOBALS['wgOpenIDConnect_UseHostedDomain'] === true ) {
+				if( !isset( $GLOBALS['wgOpenIDConnect_HostedDomain'] ) ) {
+					wfDebug( "wgOpenIDConnect_UseHostedDomain set, but wgOpenIDConnect_HostedDomain not set" . PHP_EOL );
+					return false;
+				}				
+				$oidc->addAuthParam( array( "hd=" + $GLOBALS['wgOpenIDConnect_HostedDomain'] ) );
+			}
 			if ( $oidc->authenticate() ) {
+
+				if( $GLOBALS['wgOpenIDConnect_UseHostedDomain'] === true ) {
+					$hd = $oidc->requestUserInfo( "hd" );
+					if( !isset( $hd ) || $hd != $GLOBALS['wgOpenIDConnect_HostedDomain'] ) {
+						return false;
+					}
+				}
 
 				$preferred_username =
 					$oidc->requestUserInfo( "preferred_username" );

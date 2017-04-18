@@ -36,7 +36,8 @@
 		"OpenIDConnect_ForceLogout": false,
 		"OpenIDConnect_UseRealNameAsUserName": false,
 		"OpenIDConnect_UseEmailNameAsUserName": false,
-		"PluggableAuth_Class": "OpenIDConnect"
+		"PluggableAuth_Class": "OpenIDConnect",
+		"OpenIDConnect_UseHostedDomain" : false
 	},
 	"PluggableAuthLoginSpecialPages": [
 		"SelectOpenIDConnectIssuer"
